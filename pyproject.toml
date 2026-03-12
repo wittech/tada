@@ -13,10 +13,10 @@ classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version"]
 dependencies = [
     # "descript-audiotools @ git+ssh://git@github.com/HumeAI/descript-audiotools.git@master",
-    "transformers>=4.57.1,<5",
-    "torch>=2.7.0,<2.8.0",
-    "torchaudio",
-    "torchvision",
+    "transformers==5.3.0.dev0",
+    "torch==2.10.0+cu130",
+    "torchaudio==2.10.0+cu130",
+    "torchvision==0.15.0+cu130",
     "descript-audio-codec>=1.0.0",
 ]
 
