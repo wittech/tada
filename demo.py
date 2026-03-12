@@ -5,7 +5,7 @@ import torchaudio
 from tada.modules.encoder import Encoder
 from tada.modules.tada import TadaForCausalLM
 
-device = "cuda"
+device = "cuda:1"
 encoder = Encoder.from_pretrained("/data/models/tada-codec", subfolder="encoder", language="ch").to(device)
 model = TadaForCausalLM.from_pretrained("/data/models/tada-3b-ml").to(device)
 
