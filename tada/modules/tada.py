@@ -696,7 +696,9 @@ class TadaForCausalLM(LlamaForCausalLM):
             pad_token_id=self.tokenizer.pad_token_id,
         )
 
-        generation_config, model_kwargs = self._prepare_generation_config(generation_config, True)
+        # Call _prepare_generation_config with only generation_config (newer transformers API)
+        generation_config = self._prepare_generation_config(generation_config)
+        model_kwargs = {}
         self._prepare_cache_for_generation(generation_config, model_kwargs, None, 1, num_steps)
         model_kwargs["cache_position"] = torch.arange(1, device=input_ids.device, dtype=torch.long)
 
