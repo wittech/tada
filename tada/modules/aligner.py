@@ -94,6 +94,10 @@ class AlignOutput:
 class Aligner(PreTrainedModel):
     config_class = AlignerConfig
 
+    @property
+    def all_tied_weights_keys(self):
+        return self._all_tied_weights_keys
+
     def __init__(
         self,
         config: AlignerConfig,
@@ -109,6 +113,7 @@ class Aligner(PreTrainedModel):
             inference_window_stride: Stride between windows (default: window_size // 2).
         """
         super().__init__(config)
+        self._all_tied_weights_keys = {}
         self.tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_name)
 
         self.encoder_config = AutoConfig.from_pretrained(config.base_model_name)
