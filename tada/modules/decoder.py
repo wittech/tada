@@ -178,8 +178,13 @@ class DecoderConfig(PretrainedConfig):
 class Decoder(PreTrainedModel):
     config_class = DecoderConfig
 
+    @property
+    def all_tied_weights_keys(self):
+        return self._all_tied_weights_keys
+
     def __init__(self, config: DecoderConfig):
         super().__init__(config)
+        self._all_tied_weights_keys = {}
         self.decoder_proj = nn.Linear(self.config.embed_dim, self.config.hidden_dim)
 
         self.local_attention_decoder = LocalAttentionEncoder(

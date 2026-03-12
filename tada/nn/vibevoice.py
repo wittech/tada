@@ -231,11 +231,16 @@ class VibeVoiceDiffusionHead(PreTrainedModel):
     _supports_flash_attn_2 = True
     _supports_sdpa = True
 
+    @property
+    def all_tied_weights_keys(self):
+        return self._all_tied_weights_keys
+
     def __init__(
         self,
         config,
     ):
         super().__init__(config)
+        self._all_tied_weights_keys = {}
         self.config = config
         self.cond_dim = config.hidden_size
         latent_size = config.latent_size

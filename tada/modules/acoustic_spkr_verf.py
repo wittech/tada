@@ -48,8 +48,13 @@ class AcousticSpkrVerf(PreTrainedModel):
     config_class = AcousticSpkrVerfConfig
     base_model_prefix = "encoder"
 
+    @property
+    def all_tied_weights_keys(self):
+        return self._all_tied_weights_keys
+
     def __init__(self, config: AcousticSpkrVerfConfig):
         super().__init__(config)
+        self._all_tied_weights_keys = {}
         self.config = config
 
         layers = []
