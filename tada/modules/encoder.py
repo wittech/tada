@@ -774,6 +774,10 @@ class Encoder(PreTrainedModel):
             token_positions = align_output.token_positions
             token_masks = align_output.token_masks
 
+        # Convert audio to match encoder dtype (fixes dtype mismatch: FloatTensor vs CUDABFloat16Type)
+        encoder_dtype = next(self.parameters()).dtype
+        x = x.to(encoder_dtype)
+
         enc_out, token_masks = self.get_encoder_outputs(x, token_masks, inference_window_size, inference_window_stride)
 
         # encoded = torch.gather(enc_out, 1, all_selected_positions.unsqueeze(-1).expand(-1, -1, enc_out.shape[-1]))
