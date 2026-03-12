@@ -607,6 +607,7 @@ class Encoder(PreTrainedModel):
         config: EncoderConfig,
     ):
         super().__init__(config)
+        self.all_tied_weights_keys = []
         self.wav_encoder = WavEncoder(d_model=64, strides=config.strides, d_latent=config.hidden_dim)
 
         self.local_attention_encoder = LocalAttentionEncoder(
