@@ -27,3 +27,11 @@ output = model.generate(
 )
 elapsed_time = time.time() - start_time
 print(f"Model generation took {elapsed_time:.2f} seconds")
+
+# Save the output audio to a file
+if output.audio is not None and len(output.audio) > 0:
+    # GenerationOutput.audio is a list of tensors
+    audio_output = output.audio[0]  # Get the first audio tensor
+    sample_rate = 24000  # Default sample rate for TTS models
+    torchaudio.save("output.wav", audio_output.cpu(), sample_rate)
+    print(f"Audio saved to output.wav")
