@@ -697,8 +697,13 @@ class TadaForCausalLM(LlamaForCausalLM):
         )
 
         # Call _prepare_generation_config with only generation_config (newer transformers API)
-        generation_config = self._prepare_generation_config(generation_config)
-        model_kwargs = {}
+        # The method returns (generation_config, model_kwargs) in newer versions
+        result = self._prepare_generation_config(generation_config)
+        if isinstance(result, tuple):
+            generation_config, model_kwargs = result
+        else:
+            generation_config = result
+            model_kwargs = {}
         self._prepare_cache_for_generation(generation_config, model_kwargs, None, 1, num_steps)
         model_kwargs["cache_position"] = torch.arange(1, device=input_ids.device, dtype=torch.long)
 
