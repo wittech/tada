@@ -288,7 +288,12 @@ class LocalSelfAttention(torch.nn.Module):
         batch_size, seq_len, d_model = x.shape
 
         # Convert input to match model dtype to avoid dtype mismatch in attention
-        model_dtype = next(self.parameters()).dtype
+        # Use qkv weight dtype as the source of truth since that's where the computation happens
+        # Fallback to x.dtype if model has no parameters yet
+        try:
+            model_dtype = self.qkv.weight.dtype
+        except (AttributeError, StopIteration):
+            model_dtype = x.dtype
         x = x.to(model_dtype)
 
         # Compute Q, K, V
@@ -324,6 +329,10 @@ class LocalSelfAttention(torch.nn.Module):
         # Apply softmax and dropout
         attn_weights = torch.softmax(attn_scores, dim=-1)
         attn_weights = self.dropout(attn_weights)
+
+        # Convert both tensors to model dtype to avoid dtype mismatch
+        attn_weights = attn_weights.to(model_dtype)
+        v = v.to(model_dtype)
 
         # Apply attention to values
         attn_output = torch.matmul(attn_weights, v)  # (batch, num_heads, seq_len, head_dim)
