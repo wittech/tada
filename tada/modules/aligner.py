@@ -80,7 +80,7 @@ def _align_text_tokens(probs: torch.Tensor, text_tokens: torch.Tensor) -> list[i
 
 class AlignerConfig(PretrainedConfig):
     base_model_name: str = "facebook/wav2vec2-large"
-    tokenizer_name: str = "meta-llama/Llama-3.2-1B"
+    tokenizer_name: str = "unsloth/Llama-3.2-1B"
     emb_dim: int = 4096
 
 
