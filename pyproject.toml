@@ -16,7 +16,7 @@ dependencies = [
     "transformers==5.3.0.dev0",
     "torch==2.10.0+cu130",
     "torchaudio==2.10.0+cu130",
-    "torchvision==0.15.0+cu130",
+    "torchvision==0.25.0+cu130",
     "descript-audio-codec>=1.0.0",
 ]
 
