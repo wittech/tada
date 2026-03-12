@@ -287,6 +287,10 @@ class LocalSelfAttention(torch.nn.Module):
         """
         batch_size, seq_len, d_model = x.shape
 
+        # Convert input to match model dtype to avoid dtype mismatch in attention
+        model_dtype = next(self.parameters()).dtype
+        x = x.to(model_dtype)
+
         # Compute Q, K, V
         qkv = self.qkv(x)  # (batch, seq_len, 3 * d_model)
         qkv = qkv.reshape(batch_size, seq_len, 3, self.num_heads, self.head_dim)
