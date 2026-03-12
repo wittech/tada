@@ -745,9 +745,6 @@ class Encoder(PreTrainedModel):
 
         x = audio
         device = x.device
-        # Convert audio to match model dtype (fixes dtype mismatch: FloatTensor vs CUDABFloat16Type)
-        model_dtype = next(self.parameters()).dtype
-        x = x.to(model_dtype)
 
         if text is None and text_tokens is None:
             audio_16k = [
@@ -768,7 +765,7 @@ class Encoder(PreTrainedModel):
 
         if token_positions is None or token_masks is None:
             align_output = self.aligner(
-                x,
+                audio,
                 text_tokens=text_tokens,
                 audio_length=audio_length,
                 inference_window_size=inference_window_size,

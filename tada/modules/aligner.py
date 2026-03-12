@@ -207,6 +207,9 @@ class Aligner(PreTrainedModel):
         inference_window_stride: int | None = None,
     ) -> AlignOutput:
         audio = torchaudio.functional.resample(audio, sample_rate, 16000)
+        # Convert audio to match encoder dtype (fixes dtype mismatch: FloatTensor vs CUDABFloat16Type)
+        encoder_dtype = next(self.encoder.parameters()).dtype
+        audio = audio.to(encoder_dtype)
         attention_mask = None
         if audio_length is not None:
             attention_mask = torch.arange(audio.shape[1], device=audio.device).unsqueeze(0) < audio_length
